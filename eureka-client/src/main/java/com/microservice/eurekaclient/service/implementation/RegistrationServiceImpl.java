@@ -37,8 +37,8 @@ public class RegistrationServiceImpl implements RegistrationService {
             "Service: password %s must contain at least 8 characters (letters and numbers)";
 
     private final static String LOGIN_ROUTE = "<meta http-equiv=\"refresh\" content=\"0;" +
-            " url=https://ujp-sports-hub-ui.herokuapp.com/login\" />";
-    private final static String EMAIL_SERVER = "sportshubcustom@gmail.com";
+            " url=http://localhost:3000/login\" />";
+    private final static String EMAIL_SERVER = "permutationsproject@gmail.com";
 
     private final UserService userService;
     private final ConfirmationTokenService confirmationTokenServiceImpl;
@@ -69,8 +69,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         );
 
 
-        //TODO
-        String link = "https://ujp-sports-hub.herokuapp.com/api/v1/registration/confirm?token=" + token;
+        String link = "http://localhost:8765/api/v1/registration/confirm?token=" + token;
 
         emailSender.send(
                 request.getEmail(),
@@ -113,11 +112,11 @@ public class RegistrationServiceImpl implements RegistrationService {
                 + ", " + LocalDateTime.now().getYear();
 
         StringBuilder email = new StringBuilder(Files
-                .asCharSource(new File("src/main/resources/templates/email.html"), StandardCharsets.UTF_8)
+                .asCharSource(new File("eureka-client/src/main/resources/templates/email.html"), StandardCharsets.UTF_8)
                 .read());
 
         email
-                .insert(email.indexOf("Hub") + 3, date)
+                .insert(email.indexOf("Project") + 3, date)
                 .insert(email.indexOf("href=\"\"") + 6, link);
 
         return email.toString();

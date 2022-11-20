@@ -20,8 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Slf4j
 public class EmailServiceImpl implements EmailSenderService {
-
-    private final static String EMAIL_SENDING_FAILURE = "Service: failed to send email message to %s";
     private final JavaMailSender mailSender;
 
     @Override
@@ -36,13 +34,13 @@ public class EmailServiceImpl implements EmailSenderService {
 
             helper.setText(email, true);
             helper.setTo(to);
-            helper.setFrom("sportshub@gmail.com", "Sports Hub");
-            helper.setSubject("Welcome to Sports Hub");
+            helper.setFrom("permutationsproject@gmail.com", "Permutations Project");
+            helper.setSubject("Welcome to Permutations Project");
 
             mailSender.send(mimeMessage);
         } catch (UnsupportedEncodingException | MessagingException e) {
-            log.error(String.format(EMAIL_SENDING_FAILURE, to));
-            throw new SendFailedException(String.format(EMAIL_SENDING_FAILURE, to));
+            log.error(String.format("Service: failed to send email message to %s", to));
+            throw new SendFailedException(String.format("Service: failed to send email message to %s", to));
         }
     }
 }

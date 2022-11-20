@@ -22,9 +22,8 @@ import com.microservice.eurekaclient.service.RegistrationService;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping(path = "/registration")
+@RequestMapping(path = "/api/v1/registration")
 @Slf4j
-@CrossOrigin
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -34,7 +33,7 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<String> register(@RequestBody @Valid RegistrationRequestDTO request)
             throws IOException, SendFailedException {
         log.info(String.format("Controller: registering user with email %s", request.getEmail()));
@@ -43,7 +42,7 @@ public class RegistrationController {
                 .body(registrationService.register(request));
     }
 
-    @GetMapping(path = "confirm")
+    @GetMapping(path = "/confirm")
     public ResponseEntity<String> confirm(@RequestParam("token") String token) {
         log.info(String.format("Controller: confirming token %s", token));
         return ResponseEntity
