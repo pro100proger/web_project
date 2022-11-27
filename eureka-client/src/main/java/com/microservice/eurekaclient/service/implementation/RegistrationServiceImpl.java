@@ -43,21 +43,12 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UserService userService;
     private final ConfirmationTokenService confirmationTokenServiceImpl;
     private final EmailSenderService emailSender;
-    // private final PasswordValidator passwordValidator;
 
     @Override
     public String register(RegistrationRequestDTO request)
             throws IOException, SendFailedException {
 
         log.info(String.format("Service: registering user with email %s", request.getEmail()));
-
-//        boolean isValidPassword = passwordValidator.
-//                test(request.getPassword());
-
-//        if (!isValidPassword) {
-//            log.error(String.format(INVALID_PASSWORD, request.getPassword()));
-//            throw new InvalidPasswordException(String.format(INVALID_PASSWORD, request.getPassword()), request);
-//        }
 
         String token = userService.signUpUser(
                 new UserDTO(
@@ -85,18 +76,18 @@ public class RegistrationServiceImpl implements RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenServiceImpl
                 .getToken(token)
                 .orElseThrow(() ->
-                        new RuntimeException()); //TokenNotFoundException(String.format(TOKEN_NOT_FOUND, token)));
+                        new RuntimeException());
 
         if (confirmationToken.getConfirmedAt() != null) {
             log.error(String.format(TOKEN_ALREADY_CONFIRMED, token));
-            throw new RuntimeException();// TokenAlreadyConfirmedException(String.format(TOKEN_ALREADY_CONFIRMED, token), confirmationToken);
+            throw new RuntimeException();
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
             log.error(String.format(TOKEN_EXPIRED, token));
-            throw new RuntimeException();// TokenExpiredException(String.format(TOKEN_EXPIRED, token), confirmationToken);
+            throw new RuntimeException();
         }
 
         confirmationTokenServiceImpl.setConfirmedAt(token);

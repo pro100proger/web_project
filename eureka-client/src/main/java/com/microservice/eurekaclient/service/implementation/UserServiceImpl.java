@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordConfig passwordConfig;
     private final UserMapper userMapper;
     private final ConfirmationTokenService confirmationTokenService;
-    // private final PasswordValidator passwordValidator;
 
     @Override
     public String signUpUser(UserDTO userDTO) {
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
         if (userExists) {
             log.error(String.format("Service: email %s already taken", userDTO.getEmail()));
-            throw new RuntimeException(); //EmailAlreadyTakenException(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()), userDTO);
+            throw new RuntimeException();
         }
 
         String encodedPassword = passwordConfig.passwordEncoder()
